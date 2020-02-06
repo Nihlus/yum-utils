@@ -173,7 +173,10 @@ def main():
     #  Use progress bar display when downloading repo metadata
     # and package files ... needs to be setup before .repos (ie. RHN/etc.).
     if not opts.quiet:
-        my.repos.setProgressBar(TextMeter(fo=sys.stdout), TextMultiFileMeter(fo=sys.stdout))
+        if yum.__version__ <= '3.4.3':
+            my.repos.setProgressBar(TextMeter(fo=sys.stdout))
+        else:
+            my.repos.setProgressBar(TextMeter(fo=sys.stdout), TextMultiFileMeter(fo=sys.stdout))
     my.doRepoSetup()
 
     if len(opts.repoid) > 0:
