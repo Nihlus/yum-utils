@@ -126,6 +126,8 @@ def parseArgs():
         action="store_true",
         help=_("Allow packages stored outside their repo directory to be synced "
                "(UNSAFE, USE WITH CAUTION!)"))
+    parser.add_option("-k", "--keep-count", dest='keep', default=None, action="store_true",
+                      help=_("Only keep up to this many newest packages per-repo"))
     (opts, args) = parser.parse_args()
     return (opts, args)
 
@@ -218,6 +220,23 @@ def main():
 
         if opts.newest:
             download_list = reposack.returnNewestByNameArch()
+        elif opts.keep is not None:
+            unfiltered_list = list(reposack)
+            package_dict = dict()
+
+            for pkg in unfiltered_list:
+                package_dict.setdefault(pkg.name, []).append(pkg)
+
+            for name in package_dict:
+                newest_pkgs = sorted(package_dict[name])[-opts.keep:]
+                package_dict[name] = newest_pkgs
+
+            flattened_list = []
+            for package_list in package_dict.values():
+                for pkg in package_list:
+                    flattened_list.append(pkg)
+
+            download_list = flattened_list
         else:
             download_list = list(reposack)
 
