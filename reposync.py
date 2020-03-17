@@ -126,7 +126,7 @@ def parseArgs():
         action="store_true",
         help=_("Allow packages stored outside their repo directory to be synced "
                "(UNSAFE, USE WITH CAUTION!)"))
-    parser.add_option("-k", "--keep-count", dest='keep', default=None, action="store_true",
+    parser.add_option("-k", "--keep-count", dest='keep', default=None, type=int,
                       help=_("Only keep up to this many newest packages per-repo"))
     (opts, args) = parser.parse_args()
     return (opts, args)
