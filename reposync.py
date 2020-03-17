@@ -228,7 +228,7 @@ def main():
             package_dict = dict()
 
             for pkg in unfiltered_list:
-                package_dict.setdefault(pkg.name, []).append(pkg)
+                package_dict.setdefault(pkg.name + pkg.arch, []).append(pkg)
 
             for name in package_dict:
                 newest_pkgs = sorted(package_dict[name])[-opts.keep:]
